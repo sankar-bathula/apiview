@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from rest_framework import mixins
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from apiviewapp.serializers import NameSerializer, EmployeeSerializer
 from apiviewapp.models import Employee
+
 # Create your views here.
 class TestAPIView(APIView):
 	""" This APIView for Http methods operation"""
@@ -109,3 +111,28 @@ class EmployeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
 	queryset = Employee.objects.all()
 	serializer_class = EmployeeSerializer
 	lookup_field = 'id'
+#Django restframework mixins
+class EmployeeListModelMixins(mixins.CreateModelMixin, generics.ListAPIView):
+	"""This class is implemented for mixins """
+	queryset = Employee.objects.all()
+	serializer_class =EmployeeSerializer
+	def post(self, request, *args, **kwargs):
+		"""This method is developed for get all resources and craete resources"""
+		return self.create(request, *args, **kwargs)
+
+class EmployeeDetailsViewMixins(mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.RetrieveAPIView):
+	""""This class implemented for the retrieve, delete and update resource"""
+	queryset = Employee.objects.all()
+	serializer_class =EmployeeSerializer
+	def put(self, request, *args, **kwargs):
+		""" this method used to update all fields """
+		return self.update(request, *args, **kwargs)
+
+	def patch(self, request, *args, **kwargs):
+		""" this method used to partial update  fields """
+		return self.partial_update(request, *args, **kwargs)
+
+	def delete(self, request, *args, **kwargs):
+		""" this method used to delete resource fields """
+		return self.destroy(request, *args, **kwargs)
+	

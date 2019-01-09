@@ -18,6 +18,7 @@ from django.urls import path, include,re_path
 from django.conf.urls import url,include
 from apiviewapp import views
 from rest_framework import routers
+from rest_framework.authtoken import views as views1
 router = routers.DefaultRouter()
 router.register(r'test-viewset', views.TestViewSets, basename='test-viewset')
 
@@ -33,6 +34,10 @@ urlpatterns = [
     #re_path('api', views.EmployeeListCreateAPIView.as_view()),
     #re_path('^api/(?P<id>\d+)/$', views.EmployeeRetrieveUpdateAPIView.as_view()),
     #re_path('^api/(?P<id>\d+)/$', views.EmployeeRetrieveDestroyAPIView.as_view()),
-    re_path('^api/(?P<id>\d+)/$', views.EmployeeRetrieveUpdateDestroyAPIView.as_view()),
+    #re_path('^api/(?P<id>\d+)/$', views.EmployeeRetrieveUpdateDestroyAPIView.as_view()),
+    #re_path('^api_mixins/(?P<pk>\d+)/$', views.EmployeeDetailsViewMixins.as_view()),
+    re_path('api_mixins/', views.EmployeeListModelMixins.as_view()),
+    re_path('api-token-auth/', views1.obtain_auth_token, name='api-token-auth'),
+
     #path('', include(router.urls)),
 ]
